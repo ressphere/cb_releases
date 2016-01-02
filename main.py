@@ -1,5 +1,5 @@
 __author__ = 'VCFR67'
-#main entry
+#main entry for ressphere
 import sys
 import libs
 import os
