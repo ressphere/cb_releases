@@ -1,29 +1,79 @@
 __author__ = 'VCFR67'
-#main entry for ressphere
-import sys
-import libs
-import os
-import settings
-from minifier import *
-from rcssmin import *
-if __name__ == "__main__":
 
+import sys
+import argparse
+
+import libs
+from minifier import *
+from libs.ftp_connection import *
+import threading
+
+def start_upload(host, username, password, root, filenames, ftp_upload_filter_list, release_dir, disable_log, th_event):
+    try:
+        with libs.ftp(server, username, password) as FtpAgent:
+            print("filter apply: ", ftp_upload_filter_list)
+            FtpAgent.set_filters(ftp_upload_filter_list)
+            for filename in filenames:
+                FtpAgent.upload(root, filename, release_dir, disable_log)
+    finally:
+        th_event.set()
+
+if __name__ == "__main__":
     MinifyAgent = None
-    if len(sys.argv) < 2:
-        sys.stderr.write("development directory contains the code is require")
-    if "htdocs" not in sys.argv[1] and "trunk" not in sys.argv[1]:
+    ftp_upload_filter_list = [
+        os.path.join('properties', 'assets'),
+        ".git",
+        "db"
+    ]
+    # argument parser
+    parser = argparse.ArgumentParser(description='Argument require for specify the path and action to release the script')
+    parser.add_argument('--path',type=str, required=True,
+                   help='path that contains the site files. eg: C:\\xampp\\htdocs\\cb_iloveproperty\\trunk')
+    parser.add_argument('--minify', '-m', action='store_true', required=False,
+                   help='add this argument if we want to minify the website size')
+    parser.add_argument('--upload', nargs=3,
+                   help='direct ftp upload, require 3 args: host username password')
+    parser.add_argument('--disabled_logging', action='store_true',
+                   help='disable print')
+
+    args = parser.parse_args()
+
+    if "htdocs" not in args.path and "trunk" not in args.path:
         sys.stderr.write("development directory with htdocs and trunk required")
-    if len(sys.argv) == 3 and sys.argv[2] == "minify":
+    if args.minify:
         MinifyAgent = minifier()
-    DirectoryManager = libs.DirectoryFileManager(sys.argv[1], os.getcwd())
+    DirectoryManager = libs.DirectoryFileManager(args.path, os.getcwd())
     DirectoryManager.create_release_folder(True)
-    DirectoryManager.copy_dev_dir_to_release_dir(sys.argv[1],settings.structure)
+    DirectoryManager.copy_dev_dir_to_release_dir(args.path,settings.structure)
     DirectoryManager.copy_targeted_dir()
     StringParserManager = libs.StringParser()
     StringParserManager.execute(DirectoryManager.release_folder,settings.file_need_to_parse)
     if MinifyAgent:
         MinifyAgent.minify_string(DirectoryManager.release_folder)
-    #begin_parsing(DirectoryManager.release_folder)
+
+    if args.upload and len(args.upload) == 3:
+        (server, username, password) = args.upload
+        disable_logging = args.disabled_logging
+        counter = 0
+        upload_event = threading.Event()
+
+        for root, directories, filenames in os.walk(DirectoryManager.release_folder):
+            required_args = (server,
+                            username,password,
+                            root,filenames,
+                            ftp_upload_filter_list,
+                            DirectoryManager.release_folder, args.disabled_logging, upload_event)
+
+            th = threading.Thread(target=start_upload,args=required_args)
+            upload_event.clear()
+            th.start()
+
+            counter = counter + 1
+            if counter > 5:
+                upload_event.wait()
+                counter = counter -1
+
+            #start_upload(server, username,password, root,filenames,ftp_upload_filter_list, DirectoryManager.release_folder, disable_logging)
 
 
 

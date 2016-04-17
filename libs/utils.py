@@ -49,12 +49,12 @@ class StringParser(AsyncCall):
 class DirectoryFileManager(AsyncCall):
     def __init__(self, dev_source, release_folder = None):
         self.dev_source = dev_source
-        self.release_folder = release_folder
+        self._release_folder = release_folder
         super(DirectoryFileManager,self).__init__()
 
     def begin_replacement(self, dev_source, replacement_source, release_folder = None):
         if release_folder is not None:
-            self.release_folder = release_folder
+            self._release_folder = release_folder
         if(self.release_folder is None):
             raise Exception("release folder cannot be none")
 
@@ -96,11 +96,11 @@ class DirectoryFileManager(AsyncCall):
 
         if os.path.exists(dir_name):
             if force:
-                os.rmdir(dir_name)
+                shutil.rmtree(dir_name, ignore_errors=True)
             else:
                 raise Exception("File exists at %s, please delete"%dir_name)
         os.mkdir(dir_name)
-        self.release_folder = dir_name
+        self._release_folder = dir_name
 
     def copy_targeted_dir(self):
         target_dir = os.path.join(os.getcwd(), "ressphere")
@@ -110,7 +110,9 @@ class DirectoryFileManager(AsyncCall):
                 targeted_path_name = os.path.join(dirpath.replace(target_dir, self.release_folder), filename).replace('/', os.path.sep)
                 shutil.copy(source_path_name, targeted_path_name)
 
-
+    @property
+    def release_folder(self):
+        return self._release_folder
 
 
 

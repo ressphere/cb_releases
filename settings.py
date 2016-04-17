@@ -39,6 +39,14 @@ file_need_to_parse = [
         'keys': {
             'dirname(dirname(dirname(dirname(dirname(__DIR__)))))':'dirname(dirname(dirname(dirname(__DIR__))))'
         }
+    },
+    {
+        'files': [
+            '/js/cb_update_profile.js'
+        ],
+        'keys': {
+            'http://localhost/cb_iloveproperty/trunk/client_views/properties_views/index.php/':'http://www.ressphere.com/properties/index.php/'
+        }
     }
 ]
 
