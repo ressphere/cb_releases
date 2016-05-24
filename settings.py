@@ -53,7 +53,8 @@ file_need_to_parse = [
             '/fuel/application/controllers/garbage_collector.php'
         ],
         'keys': {
-            '"/client_views/properties_views/assets/images/properties"':'"/properties/assets/images/properties"'
+            '"/client_views/properties_views/assets/images/properties"':'"/properties/assets/images/properties"',
+            'dirname(dirname(dirname(dirname(__DIR__))))':'dirname(dirname(dirname(__DIR__)))'
         }
     }
 ]
