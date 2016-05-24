@@ -47,6 +47,14 @@ file_need_to_parse = [
         'keys': {
             'http://localhost/cb_iloveproperty/trunk/client_views/properties_views/index.php/':'http://www.ressphere.com/properties/index.php/'
         }
+    },
+    {
+        'files': [
+            '/fuel/application/controllers/garbage_collector.php'
+        ],
+        'keys': {
+            '"/client_views/properties_views/assets/images/properties"':'"/properties/assets/images/properties"'
+        }
     }
 ]
 
