@@ -56,6 +56,14 @@ file_need_to_parse = [
             '"/client_views/properties_views/assets/images/properties"':'"/properties/assets/images/properties"',
             'dirname(dirname(dirname(dirname(__DIR__))))':'dirname(dirname(dirname(__DIR__)))'
         }
+    },
+    {
+        'files': [
+            '/properties/application/controllers/properties_base.php'
+        ],
+        'keys': {
+            'dirname(dirname(dirname(dirname(__DIR__))))':'dirname(dirname(dirname(__DIR__)))'
+        }
     }
 ]
 
