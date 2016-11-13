@@ -64,6 +64,14 @@ file_need_to_parse = [
         'keys': {
             'dirname(dirname(dirname(dirname(__DIR__))))':'dirname(dirname(dirname(__DIR__)))'
         }
+    },
+	{
+        'files': [
+            '/db/cb_db/s8_cb_properties_trigger_function.sql'
+        ],
+        'keys': {
+            'iloveproperties_db':'ressykir_iloveproperties_db'
+        }
     }
 ]
 
