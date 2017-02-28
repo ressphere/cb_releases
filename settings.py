@@ -79,7 +79,7 @@ replacement_files = "ressphere"
 structure = [
     {"circle_property/*":"/"},
     {"client_views/properties_views/*":"/properties/"},
-    {"client_views/advertisement_views/*":"/advertisement/"},
+    {"client_views/aroundyou_views/*":"/aroundyou/"},
     {"fonts/*":"/fonts/"},
     {"fonts/*":"/properties/fonts/"},
     {"temp/*":"/temp/"}
@@ -90,12 +90,12 @@ js_paths = [
 			'js/_usercontrols',
             '/properties/js/',
             '/properties/js/_utils/'
-            '/advertisement/js/',
-            '/advertisement/js/_utils/'
+            '/aroundyou_views/js/',
+            '/aroundyou_views/js/_utils/'
            ]
 css_paths = ['/css/',
             '/properties/css/',
-            '/advertisement/css/']
+            '/aroundyou_views/css/']
 
 
 
