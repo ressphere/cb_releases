@@ -65,6 +65,7 @@ class DirectoryFileManager(AsyncCall):
         assert(release_folder)
 
         for dir_structure in dir_structure_list:
+            print(dir_structure)
             for (target_folder, dest_folder) in dir_structure.items():
                 target_folder = target_folder.replace("/", os.path.sep)
                 dest_folder = dest_folder.replace("/", os.path.sep)
@@ -83,6 +84,8 @@ class DirectoryFileManager(AsyncCall):
                          else:
                             filename = os.path.basename(target_file_folder)
                             dest_filename = os.path.join(dest_folder_full_path, filename)
+                            if(not os.path.exists(dest_folder_full_path)):
+                                os.makedirs(dest_folder_full_path)
                             shutil.copy(target_file_folder, os.path.join(dest_filename))
 
     def create_release_folder(self, force = False):
