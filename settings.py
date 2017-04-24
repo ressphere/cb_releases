@@ -26,7 +26,8 @@ file_need_to_parse = [
     },
     {
         'files': [
-            '/properties/js/property_new_listing.js'
+            '/properties/js/property_new_listing.js',
+            '/properties/js/property_edit_listing.js'
         ],
         'keys': {
             '/cb_iloveproperty/trunk/client_views/properties_views/index.php/_utils/properties_upload/images':'/properties/index.php/_utils/properties_upload/images'
