@@ -5,3 +5,4 @@ from libs.async_base import *
 from libs.filelock import *
 from libs.utils import *
 from libs.ftp_connection import *
+from libs.version import *

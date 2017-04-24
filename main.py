@@ -42,6 +42,9 @@ if __name__ == "__main__":
         sys.stderr.write("development directory with htdocs and trunk required")
     if args.minify:
         MinifyAgent = minifier()
+    ver = libs.Version(args.path)
+    ver.update_version()
+    print("Please check in new version in config")
     DirectoryManager = libs.DirectoryFileManager(args.path, os.getcwd())
     DirectoryManager.create_release_folder(True)
     DirectoryManager.copy_dev_dir_to_release_dir(args.path,settings.structure)
