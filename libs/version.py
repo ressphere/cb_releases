@@ -23,6 +23,7 @@ class Version:
                                 if(len(splitted_content) == 2):
                                     fname_version = (fname, line, splitted_content[1].strip(" ;\n"), int(splitted_content[1].strip(" ;\n")) + 1)
                                     self.file_version.append(fname_version)
+                                    print(fname_version)
                             line = line + 1
                     except:
                         pass
@@ -30,10 +31,13 @@ class Version:
 
     def write_version(self):
         for (fname, line, old, new) in self.file_version:
-            with open(fname, 'r+') as f:
+            contents = None
+            with open(fname, 'r') as f:
                 contents = f.readlines()
                 contents[line] = contents[line].replace(old, str(new))
-                f.writelines(contents)
+            if contents:
+                with open(fname, 'w+') as f:
+                    f.writelines(contents)
 
     def get_config_file(self):
         #search_pattern = os.path.join(self.src_path)

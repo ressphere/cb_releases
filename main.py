@@ -7,6 +7,8 @@ import libs
 from minifier import *
 from libs.ftp_connection import *
 import threading
+import ctypes  # An included library with Python install.
+
 
 def start_upload(host, username, password, root, filenames, ftp_upload_filter_list, release_dir, disable_log, th_event):
     try:
@@ -38,13 +40,14 @@ if __name__ == "__main__":
 
     args = parser.parse_args()
 
-    if "htdocs" not in args.path and "trunk" not in args.path:
+    if "htdocs" not in args.path or "trunk" not in args.path:
         sys.stderr.write("development directory with htdocs and trunk required")
+        exit(-1)
     if args.minify:
         MinifyAgent = minifier()
     ver = libs.Version(args.path)
     ver.update_version()
-    print("Please check in new version in config")
+
     DirectoryManager = libs.DirectoryFileManager(args.path, os.getcwd())
     DirectoryManager.create_release_folder(True)
     DirectoryManager.copy_dev_dir_to_release_dir(args.path,settings.structure)
@@ -75,8 +78,8 @@ if __name__ == "__main__":
             if counter > 5:
                 upload_event.wait()
                 counter = counter -1
-
-            #start_upload(server, username,password, root,filenames,ftp_upload_filter_list, DirectoryManager.release_folder, disable_logging)
+    ctypes.windll.user32.MessageBoxW(0, "js and css version updated, please checkin %s"%(args.path), "Updated version", 1)
+    print(args.path)
 
 
 
