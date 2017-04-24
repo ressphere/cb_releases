@@ -21,7 +21,10 @@ class Version:
                             if m:
                                 splitted_content = content.split('=')
                                 if(len(splitted_content) == 2):
-                                    fname_version = (fname, line, splitted_content[1].strip(" ;\n"), int(splitted_content[1].strip(" ;\n")) + 1)
+                                    new_version = int(splitted_content[1].strip(" ;\n")) + 1
+                                    if new_version > 9999:
+                                        new_version = 1000
+                                    fname_version = (fname, line, splitted_content[1].strip(" ;\n"), new_version)
                                     self.file_version.append(fname_version)
                                     print(fname_version)
                             line = line + 1
